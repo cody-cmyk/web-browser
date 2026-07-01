@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Web Browser</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="browser-container">
+        <header class="header">
+            <div class="logo">🌐 WebBrowser</div>
+            <div class="header-actions">
+                <button class="icon-btn" id="menu-btn" title="Menu">☰</button>
+            </div>
+        </header>
+
+        <nav class="toolbar">
+            <div class="nav-buttons">
+                <button id="back-btn" class="nav-btn" title="Back (Alt+←)">◀</button>
+                <button id="forward-btn" class="nav-btn" title="Forward (Alt+→)">▶</button>
+                <button id="refresh-btn" class="nav-btn" title="Refresh (Ctrl+R)">⟲</button>
+                <button id="stop-btn" class="nav-btn" title="Stop (Esc)">⊗</button>
+                <button id="home-btn" class="nav-btn" title="Home">🏠</button>
+            </div>
+
+            <div class="address-bar-container">
+                <input 
+                    type="text" 
+                    id="address-bar" 
+                    class="address-bar" 
+                    placeholder="Enter URL or search..."
+                    spellcheck="false"
+                    autocomplete="off"
+                >
+                <button id="go-btn" class="go-btn">⏎</button>
+            </div>
+
+            <div class="toolbar-actions">
+                <button id="bookmark-btn" class="icon-btn" title="Bookmark (Ctrl+D)">★</button>
+                <button id="history-btn" class="icon-btn" title="History (Ctrl+H)">⏱</button>
+                <button id="settings-btn" class="icon-btn" title="Settings">⚙</button>
+            </div>
+        </nav>
+
+        <div class="tab-bar">
+            <div class="tabs-container" id="tabs-container"></div>
+            <button id="new-tab-btn" class="new-tab-btn" title="New Tab (Ctrl+T)">+</button>
+        </div>
+
+        <main class="content-area">
+            <div id="browser-frame" class="browser-frame">
+                <iframe id="main-frame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-pointer-lock"></iframe>
+            </div>
+
+            <div class="loading-bar" id="loading-bar"></div>
+
+            <div id="home-page" class="home-page" style="display:none;">
+                <div class="home-content">
+                    <h1>Advanced Web Browser</h1>
+                    <div class="search-section">
+                        <input type="text" id="home-search" class="home-search" placeholder="Search or enter URL...">
+                    </div>
+                    <div class="shortcuts">
+                        <div class="shortcut" data-url="https://google.com">
+                            <div class="shortcut-icon">G</div>
+                            <div>Google</div>
+                        </div>
+                        <div class="shortcut" data-url="https://github.com">
+                            <div class="shortcut-icon">⚙</div>
+                            <div>GitHub</div>
+                        </div>
+                        <div class="shortcut" data-url="https://stackoverflow.com">
+                            <div class="shortcut-icon">⌐</div>
+                            <div>Stack Overflow</div>
+                        </div>
+                        <div class="shortcut" data-url="https://wikipedia.org">
+                            <div class="shortcut-icon">W</div>
+                            <div>Wikipedia</div>
+                        </div>
+                    </div>
+                    <div id="bookmarks-section" style="margin-top: 40px;">
+                        <h3>Quick Links</h3>
+                        <div id="bookmarks-list"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="status-bar">
+            <div class="status-text" id="status-text">Ready</div>
+            <div class="status-info" id="status-info"></div>
+        </footer>
+    </div>
+
+    <div class="context-menu" id="context-menu" style="display:none;">
+        <div class="context-item" onclick="browserApp.goBack()">← Back</div>
+        <div class="context-item" onclick="browserApp.goForward()">→ Forward</div>
+        <hr>
+        <div class="context-item" onclick="browserApp.reloadPage()">Reload</div>
+        <hr>
+        <div class="context-item" onclick="browserApp.addBookmark()">Add Bookmark</div>
+        <div class="context-item" onclick="browserApp.viewPageInfo()">Page Info</div>
+    </div>
+
+    <div class="modal" id="settings-modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" onclick="browserApp.closeModal('settings-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label><input type="checkbox" id="javascript-toggle" checked> Enable JavaScript</label>
+                </div>
+                <div class="setting-item">
+                    <label><input type="checkbox" id="images-toggle" checked> Load Images</label>
+                </div>
+                <div class="setting-item">
+                    <label><input type="checkbox" id="cookies-toggle" checked> Accept Cookies</label>
+                </div>
+                <div class="setting-item">
+                    <label>Home Page URL:</label>
+                    <input type="text" id="home-url" value="about:home">
+                </div>
+                <div class="setting-item">
+                    <button class="btn-danger" onclick="browserApp.clearHistory()">Clear History</button>
+                    <button class="btn-danger" onclick="browserApp.clearBookmarks()">Clear Bookmarks</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="history-modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>History</h2>
+                <button class="close-btn" onclick="browserApp.closeModal('history-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="history-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
