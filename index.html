@@ -8,141 +8,210 @@
 </head>
 <body>
     <div class="browser-container">
-        <header class="header">
-            <div class="logo">🌐 WebBrowser</div>
-            <div class="header-actions">
-                <button class="icon-btn" id="menu-btn" title="Menu">☰</button>
-            </div>
-        </header>
-
-        <nav class="toolbar">
-            <div class="nav-buttons">
-                <button id="back-btn" class="nav-btn" title="Back (Alt+←)">◀</button>
-                <button id="forward-btn" class="nav-btn" title="Forward (Alt+→)">▶</button>
-                <button id="refresh-btn" class="nav-btn" title="Refresh (Ctrl+R)">⟲</button>
-                <button id="stop-btn" class="nav-btn" title="Stop (Esc)">⊗</button>
-                <button id="home-btn" class="nav-btn" title="Home">🏠</button>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Browser</h3>
+                <button class="sidebar-toggle" id="sidebar-toggle" title="Close sidebar">✕</button>
             </div>
 
-            <div class="address-bar-container">
-                <input 
-                    type="text" 
-                    id="address-bar" 
-                    class="address-bar" 
-                    placeholder="Enter URL or search..."
-                    spellcheck="false"
-                    autocomplete="off"
-                >
-                <button id="go-btn" class="go-btn">⏎</button>
+            <!-- Tab Groups -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <h4>Tab Groups</h4>
+                    <button class="btn-icon" id="add-group-btn" title="New Group">+</button>
+                </div>
+                <div id="tab-groups-list" class="tab-groups-list"></div>
             </div>
 
-            <div class="toolbar-actions">
-                <button id="bookmark-btn" class="icon-btn" title="Bookmark (Ctrl+D)">★</button>
-                <button id="history-btn" class="icon-btn" title="History (Ctrl+H)">⏱</button>
-                <button id="settings-btn" class="icon-btn" title="Settings">⚙</button>
-            </div>
-        </nav>
-
-        <div class="tab-bar">
-            <div class="tabs-container" id="tabs-container"></div>
-            <button id="new-tab-btn" class="new-tab-btn" title="New Tab (Ctrl+T)">+</button>
-        </div>
-
-        <main class="content-area">
-            <div id="browser-frame" class="browser-frame">
-                <iframe id="main-frame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-pointer-lock"></iframe>
+            <!-- History -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <h4>History</h4>
+                    <button class="btn-icon" id="clear-history-btn" title="Clear history">🗑</button>
+                </div>
+                <div class="history-search">
+                    <input type="text" id="history-search" placeholder="Search history..." class="search-input">
+                </div>
+                <div id="history-list" class="history-list"></div>
             </div>
 
-            <div class="loading-bar" id="loading-bar"></div>
+            <!-- Bookmarks -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <h4>Bookmarks</h4>
+                </div>
+                <div id="bookmarks-list" class="bookmarks-list"></div>
+            </div>
+        </aside>
 
-            <div id="home-page" class="home-page" style="display:none;">
-                <div class="home-content">
-                    <h1>Advanced Web Browser</h1>
-                    <div class="search-section">
-                        <input type="text" id="home-search" class="home-search" placeholder="Search or enter URL...">
-                    </div>
-                    <div class="shortcuts">
-                        <div class="shortcut" data-url="https://google.com">
-                            <div class="shortcut-icon">G</div>
-                            <div>Google</div>
-                        </div>
-                        <div class="shortcut" data-url="https://github.com">
-                            <div class="shortcut-icon">⚙</div>
-                            <div>GitHub</div>
-                        </div>
-                        <div class="shortcut" data-url="https://stackoverflow.com">
-                            <div class="shortcut-icon">⌐</div>
-                            <div>Stack Overflow</div>
-                        </div>
-                        <div class="shortcut" data-url="https://wikipedia.org">
-                            <div class="shortcut-icon">W</div>
-                            <div>Wikipedia</div>
-                        </div>
-                    </div>
-                    <div id="bookmarks-section" style="margin-top: 40px;">
-                        <h3>Quick Links</h3>
-                        <div id="bookmarks-list"></div>
-                    </div>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="left-controls">
+                    <button id="back-btn" class="nav-btn" title="Back (Alt+←)">←</button>
+                    <button id="forward-btn" class="nav-btn" title="Forward (Alt+→)">→</button>
+                    <button id="refresh-btn" class="nav-btn" title="Refresh (Ctrl+R)">⟳</button>
+                    <button id="stop-btn" class="nav-btn" title="Stop">⊘</button>
+                </div>
+
+                <div class="address-bar-container">
+                    <input type="text" id="address-bar" class="address-bar" placeholder="Enter URL or search..." spellcheck="false" autocomplete="off">
+                    <div class="search-suggestions" id="search-suggestions"></div>
+                    <button id="go-btn" class="go-btn">Go</button>
+                </div>
+
+                <div class="right-controls">
+                    <button id="home-btn" class="nav-btn" title="Home">🏠</button>
+                    <button id="toggle-sidebar-btn" class="nav-btn" title="Toggle Sidebar">☰</button>
+                    <button id="settings-btn" class="nav-btn" title="Settings">⚙</button>
                 </div>
             </div>
-        </main>
 
-        <footer class="status-bar">
-            <div class="status-text" id="status-text">Ready</div>
-            <div class="status-info" id="status-info"></div>
-        </footer>
+            <!-- Loading Bar -->
+            <div class="loading-bar" id="loading-bar"></div>
+
+            <!-- Tabs -->
+            <div class="tabs-bar">
+                <div id="tabs-container" class="tabs-container"></div>
+                <button id="new-tab-btn" class="new-tab-btn" title="New Tab (Ctrl+T)">+</button>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <span id="status-text">Ready</span>
+                <span id="status-info">1 tab(s)</span>
+            </div>
+
+            <!-- Browser Content -->
+            <div class="browser-content">
+                <div id="home-page" class="home-page">
+                    <div class="home-header">
+                        <h1>🌐 Web Browser</h1>
+                        <p>Fast, secure, and feature-rich browsing</p>
+                    </div>
+                    <div class="home-search-container">
+                        <input type="text" id="home-search" class="home-search" placeholder="Search or enter URL...">
+                    </div>
+                    <div class="quick-access">
+                        <div class="quick-section">
+                            <h3>Quick Links</h3>
+                            <div id="quick-links" class="quick-links"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="browser-frame" class="browser-frame">
+                    <iframe id="main-frame" class="main-frame" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="context-menu" id="context-menu" style="display:none;">
-        <div class="context-item" onclick="browserApp.goBack()">← Back</div>
-        <div class="context-item" onclick="browserApp.goForward()">→ Forward</div>
+    <!-- Context Menu -->
+    <div id="context-menu" class="context-menu">
+        <div class="context-item" onclick="browser.goBack()">← Back</div>
+        <div class="context-item" onclick="browser.goForward()">→ Forward</div>
         <hr>
-        <div class="context-item" onclick="browserApp.reloadPage()">Reload</div>
+        <div class="context-item" onclick="browser.reloadPage()">⟳ Reload</div>
+        <div class="context-item" onclick="viewPageSource()">View Source</div>
         <hr>
-        <div class="context-item" onclick="browserApp.addBookmark()">Add Bookmark</div>
-        <div class="context-item" onclick="browserApp.viewPageInfo()">Page Info</div>
+        <div class="context-item" onclick="browser.addBookmark()">Add Bookmark</div>
+        <div class="context-item" onclick="viewPageInfo()">Page Info</div>
     </div>
 
-    <div class="modal" id="settings-modal" style="display:none;">
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Settings</h2>
-                <button class="close-btn" onclick="browserApp.closeModal('settings-modal')">×</button>
+                <button class="close-btn" onclick="closeModal('settings-modal')">×</button>
             </div>
             <div class="modal-body">
-                <div class="setting-item">
-                    <label><input type="checkbox" id="javascript-toggle" checked> Enable JavaScript</label>
+                <div class="settings-section">
+                    <h3>Privacy & Security</h3>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="javascript-toggle" checked>
+                        <span>Enable JavaScript</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="images-toggle" checked>
+                        <span>Load Images</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="cookies-toggle" checked>
+                        <span>Accept Cookies</span>
+                    </label>
                 </div>
-                <div class="setting-item">
-                    <label><input type="checkbox" id="images-toggle" checked> Load Images</label>
+
+                <div class="settings-section">
+                    <h3>Appearance</h3>
+                    <label class="select-label">
+                        Theme:
+                        <select id="theme-select">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </label>
                 </div>
-                <div class="setting-item">
-                    <label><input type="checkbox" id="cookies-toggle" checked> Accept Cookies</label>
+
+                <div class="settings-section">
+                    <h3>Home Page</h3>
+                    <label class="input-label">
+                        Home URL:
+                        <input type="text" id="home-url" value="about:home" class="form-input">
+                    </label>
                 </div>
-                <div class="setting-item">
-                    <label>Home Page URL:</label>
-                    <input type="text" id="home-url" value="about:home">
-                </div>
-                <div class="setting-item">
-                    <button class="btn-danger" onclick="browserApp.clearHistory()">Clear History</button>
-                    <button class="btn-danger" onclick="browserApp.clearBookmarks()">Clear Bookmarks</button>
+
+                <div class="settings-section">
+                    <h3>Cache & Storage</h3>
+                    <button class="btn-secondary" onclick="browser.clearCache()">Clear Cache</button>
+                    <button class="btn-danger" onclick="browser.clearBrowsingData()">Clear All Data</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal" id="history-modal" style="display:none;">
+    <!-- Tab Group Modal -->
+    <div id="group-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Tab Group</h2>
+                <button class="close-btn" onclick="closeModal('group-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="group-name" placeholder="Group name..." class="form-input">
+                <select id="group-color" class="form-input">
+                    <option value="gray">Gray</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="purple">Purple</option>
+                </select>
+                <button onclick="browser.createTabGroup()" class="btn-primary">Create Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>History</h2>
-                <button class="close-btn" onclick="browserApp.closeModal('history-modal')">×</button>
+                <button class="close-btn" onclick="closeModal('history-modal')">×</button>
             </div>
             <div class="modal-body">
-                <div id="history-list"></div>
+                <div class="history-search-modal">
+                    <input type="text" id="history-search-modal" placeholder="Search history..." class="search-input">
+                </div>
+                <div id="history-modal-list" class="history-modal-list"></div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="browser.js"></script>
 </body>
 </html>
